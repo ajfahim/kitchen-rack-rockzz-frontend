@@ -14,3 +14,15 @@ export const loginFn = async (values) => {
     console.log(error);
   }
 };
+
+export const verify = async () => {
+  try {
+    const res = await apiClient.get("users/me");
+    if (res.status === 401) {
+      return false;
+    }
+    return true;
+  } catch (error) {
+    console.error(error.response.data.msg);
+  }
+};

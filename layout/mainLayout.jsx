@@ -1,5 +1,6 @@
 import Navbar from '@/components/common/Navbar';
 import { AuthContext } from '@/contexts/authContext';
+import { verify } from '@/dataFetcher/user';
 import useToken from '@/hooks/useToken';
 import { useQueries, useQueryClient } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
@@ -9,6 +10,10 @@ import React, { useContext, useEffect } from 'react';
 
 function MainLayout({ children }) {
   const router = useRouter();
+  const { isAuthenticated } = useContext(AuthContext)
+
+
+
   const menuItems = [
     {
       id: 1,
@@ -26,9 +31,6 @@ function MainLayout({ children }) {
       title: 'Contact',
     },
   ];
-  const { isAuthenticated } = useContext(AuthContext)
-  const queryClient = useQueryClient()
-  const token = useToken();
 
   return (
     <div className="drawer-mobile drawer">
