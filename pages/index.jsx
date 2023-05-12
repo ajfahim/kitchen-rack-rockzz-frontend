@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import { Toaster } from 'react-hot-toast';
 
 export default function Home() {
   return (
@@ -12,6 +13,7 @@ export default function Home() {
       <main>
         <h1 className="text-red-500">hiss</h1>
       </main>
+      {/* <Toaster /> */}
     </>
   );
 }
