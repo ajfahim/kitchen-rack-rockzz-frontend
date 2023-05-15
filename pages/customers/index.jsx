@@ -1,3 +1,4 @@
+import Table from '@/components/customers/table';
 import { getCustomers } from '@/dataFetcher/customer';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import Link from 'next/link';
@@ -12,20 +13,18 @@ function About() {
     });
     console.log('🚀 ~ file: index.jsx:13 ~ About ~ data:', customers);
 
+    const CustomerTableColumns = ['Name', 'Phone', 'Email', 'Address'];
+
     return (
         <>
             {/* page title  */}
-            <div className='font-black text-2xl text-primary flex items-center justify-between'>
+            <div className='font-black text-2xl text-primary flex items-center justify-between my-4'>
                 <h1>Customers</h1>
                 <Link className='btn btn-secondary' href={'/customers/add'}>
                     Add Customer
                 </Link>
             </div>
-            {customers?.map((customer) => (
-                <ul key={customer?._id}>
-                    <li>{customer?.name}</li>
-                </ul>
-            ))}
+            <Table columns={CustomerTableColumns} data={customers} />
         </>
     );
 }
