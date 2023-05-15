@@ -8,7 +8,7 @@ import React, { useContext } from "react";
 function Navbar() {
   const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext)
   return (
-    <div className="navbar bg-base-100">
+    <div className="navbar bg-primary-content text-primary py-3">
       <div className="navbar-start">
         <div className="dropdown">
           <label htmlFor="sidebar" className="btn-ghost btn lg:hidden">

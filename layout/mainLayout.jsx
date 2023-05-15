@@ -12,8 +12,6 @@ function MainLayout({ children }) {
   const router = useRouter();
   const { isAuthenticated } = useContext(AuthContext)
 
-
-
   const menuItems = [
     {
       id: 1,
@@ -22,25 +20,30 @@ function MainLayout({ children }) {
     },
     {
       id: 2,
-      href: '/about',
-      title: 'About',
+      href: '/customers',
+      title: 'Customers',
     },
     {
       id: 3,
-      href: '/contact',
-      title: 'Contact',
+      href: '/products',
+      title: 'Products',
+    },
+    {
+      id: 4,
+      href: '/orders',
+      title: 'Orders',
     },
   ];
 
   return (
     <div className="drawer-mobile drawer">
       <input id="sidebar" type="checkbox" className="drawer-toggle" />
-      <div className="drawer-content flex flex-col items-start justify-start p-5">
+      <div className="drawer-content flex flex-col items-start justify-start">
         {/* <!-- Page content here --> */}
         <Navbar />
         {isAuthenticated
           ?
-          <div className="w-full">{children}</div>
+          <div className="w-full p-5">{children}</div>
           :
           <div>
             <p>Please <Link className='underline text-secondary' href={'/login'}>Sign in</Link> first</p>
