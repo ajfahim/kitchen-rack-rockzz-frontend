@@ -4,11 +4,12 @@ import React, { useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { BsPencilSquare, BsTrash } from 'react-icons/bs';
 import ConfirmationModal from '../common/confirmationModal';
+import Pagination from '../common/pagination';
 
-const Table = ({ columns, data }) => {
+const Table = ({ columns, data, onPageChange, onLimitChange, currentPage, limit }) => {
+    console.log('🚀 ~ file: table.jsx:10 ~ Table ~ data:', data);
     const [confirmation, setConfirmation] = useState(false);
     const [item, setItem] = useState({});
-    console.log('🚀 ~ file: table.jsx:10 ~ Table ~ confirmation:', confirmation);
     const queryClient = useQueryClient();
     const mutation = useMutation({
         mutationFn: async (_id) => {
@@ -41,18 +42,18 @@ const Table = ({ columns, data }) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {data?.map((d, index) => (
+                        {data?.customers?.map((d, index) => (
                             <tr key={d._id}>
                                 <th>{index + 1}</th>
                                 <td>{d.name}</td>
                                 <td>{d.phone}</td>
                                 <td>{d.email}</td>
                                 <td>{d.address}</td>
-                                <td className='flex items-center justify-evenly'>
+                                <td className='flex items-center justify-center space-x-1'>
                                     <span>
                                         <label
                                             // htmlFor='confirmation-modal'
-                                            className='btn btn-info btn-square'
+                                            className='btn btn-sm btn-info btn-square'
                                             onClick={() => setItem(d)}
                                         >
                                             <BsPencilSquare size={16} />
@@ -61,7 +62,7 @@ const Table = ({ columns, data }) => {
                                     <span>
                                         <label
                                             htmlFor='confirmation-modal'
-                                            className='btn btn-error btn-square'
+                                            className='btn btn-sm btn-error btn-square'
                                             onClick={() => setItem(d)}
                                         >
                                             <BsTrash size={16} />
@@ -71,8 +72,16 @@ const Table = ({ columns, data }) => {
                             </tr>
                         ))}
                     </tbody>
-                    <tfoot>{/* pagination will go here  */}</tfoot>
+                    <tfoot></tfoot>
                 </table>
+                <Pagination
+                    totalPages={data?.totalPages}
+                    totalCount={data?.totalCount}
+                    currentPage={currentPage}
+                    onPageChange={onPageChange}
+                    onLimitChange={onLimitChange}
+                    limit={limit}
+                />
             </div>
             <ConfirmationModal name={item?.name} state={setConfirmation} />
         </>

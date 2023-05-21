@@ -3,13 +3,16 @@ import { getCustomers } from '@/dataFetcher/customer';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useState } from 'react';
 
-function About() {
-    const queryClient = useQueryClient();
+function Customers() {
+    const [page, setPage] = useState(1);
+    const [limit, setLimit] = useState(10);
+    const onPageChange = (data) => setPage(data);
+    const onLimitChange = (data) => setLimit(data);
     const { data: customers, isLoading } = useQuery({
-        queryKey: ['customers'],
-        queryFn: getCustomers,
+        queryKey: ['customers', page, limit],
+        queryFn: () => getCustomers(page, limit),
     });
     console.log('🚀 ~ file: index.jsx:13 ~ About ~ data:', customers);
 
@@ -24,9 +27,23 @@ function About() {
                     Add Customer
                 </Link>
             </div>
-            <Table columns={CustomerTableColumns} data={customers} />
+            <div>
+                {isLoading ? (
+                    'loading...'
+                ) : (
+                    <Table
+                        columns={CustomerTableColumns}
+                        data={customers}
+                        onPageChange={onPageChange}
+                        onLimitChange={onLimitChange}
+                        currentPage={page}
+                        limit={limit}
+                        // dataFetcher={getCustomers}
+                    />
+                )}
+            </div>
         </>
     );
 }
 
-export default About;
+export default Customers;
