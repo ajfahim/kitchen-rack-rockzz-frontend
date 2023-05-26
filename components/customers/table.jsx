@@ -5,9 +5,9 @@ import { toast } from 'react-hot-toast';
 import { BsPencilSquare, BsTrash } from 'react-icons/bs';
 import ConfirmationModal from '../common/confirmationModal';
 import Pagination from '../common/pagination';
+import Link from 'next/link';
 
 const Table = ({ columns, data, onPageChange, onLimitChange, currentPage, limit }) => {
-    console.log('🚀 ~ file: table.jsx:10 ~ Table ~ data:', data);
     const [confirmation, setConfirmation] = useState(false);
     const [item, setItem] = useState({});
     const queryClient = useQueryClient();
@@ -51,13 +51,11 @@ const Table = ({ columns, data, onPageChange, onLimitChange, currentPage, limit 
                                 <td>{d.address}</td>
                                 <td className='flex items-center justify-center space-x-1'>
                                     <span>
-                                        <label
-                                            // htmlFor='confirmation-modal'
-                                            className='btn btn-sm btn-info btn-square'
-                                            onClick={() => setItem(d)}
-                                        >
-                                            <BsPencilSquare size={16} />
-                                        </label>
+                                        <Link href={`/customers/${d._id}`}>
+                                            <label className='btn btn-sm btn-info btn-square'>
+                                                <BsPencilSquare size={16} />
+                                            </label>
+                                        </Link>
                                     </span>
                                     <span>
                                         <label

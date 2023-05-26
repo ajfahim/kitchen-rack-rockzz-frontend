@@ -1,9 +1,9 @@
 import apiClient from '@/utils/apiClient';
 import { toast } from 'react-hot-toast';
 
-export const postCustomer = async (values) => {
+export const postProduct = async (values) => {
     try {
-        const res = await apiClient.post('customers', values);
+        const res = await apiClient.post('products', values);
         return res.data;
     } catch (error) {
         console.error(error.response.data.msg);
@@ -11,9 +11,9 @@ export const postCustomer = async (values) => {
     }
 };
 
-export const getCustomers = async (page = 1, limit = 10) => {
+export const getProducts = async (page = 1, limit = 10) => {
     try {
-        const res = await apiClient.get(`customers?page=${page}&limit=${limit}`);
+        const res = await apiClient.get(`products?page=${page}&limit=${limit}`);
         return res.data;
     } catch (error) {
         console.error(error?.response?.data?.msg);
@@ -21,18 +21,18 @@ export const getCustomers = async (page = 1, limit = 10) => {
     }
 };
 
-export const getCustomer = async (id) => {
+export const getProduct = async (id) => {
     try {
-        const res = await apiClient.get(`customers/${id}`);
+        const res = await apiClient.get(`products/${id}`);
         return res.data;
     } catch (error) {
         console.error(error?.response?.data?.msg);
         toast.error(error?.response?.data?.msg);
     }
 };
-export const updateCustomer = async (values, id) => {
+export const updateProduct = async (values, id) => {
     try {
-        const res = await apiClient.put(`customers/${id}`, values);
+        const res = await apiClient.put(`products/${id}`, values);
         return res.data;
     } catch (error) {
         console.error(error?.response?.data?.msg);
@@ -40,9 +40,9 @@ export const updateCustomer = async (values, id) => {
     }
 };
 
-export const delCustomer = async (_id) => {
+export const delProduct = async (_id) => {
     try {
-        const res = await apiClient.delete(`customers/${_id}`);
+        const res = await apiClient.delete(`products/${_id}`);
         return res.data;
     } catch (error) {
         console.log(error?.response?.data?.msg);

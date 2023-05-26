@@ -1,36 +1,55 @@
-import { postCustomer } from '@/dataFetcher/customer';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { getCustomer, updateCustomer } from '@/dataFetcher/customer';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Form, Input } from 'antd';
 import TextArea from 'antd/lib/input/TextArea';
 import { useRouter } from 'next/router';
-import React from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
+// import React from 'react';
 
-const AddCustomer = () => {
-    const router = useRouter();
+const EditCustomer = () => {
+    const { query, push } = useRouter();
+    const [id, setId] = useState('');
     const queryClient = useQueryClient();
+
+    useEffect(() => {
+        setId(query?.id);
+    }, [query?.id]);
+
+    const { data: customer, isLoading } = useQuery({
+        queryKey: ['customers', id],
+        queryFn: () => getCustomer(id),
+    });
+
+    const [form] = Form.useForm();
     const mutation = useMutation({
         mutationFn: async (values) => {
-            const customer = await postCustomer(values);
+            const customer = await updateCustomer(values, id);
             customer._id && toast.success(`Successfully added ${customer.name}`);
-            customer._id && router.push('/customers');
+            customer._id && push('/customers');
         },
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['customers'] });
+            queryClient.invalidateQueries({ queryKey: ['customers', id] });
         },
     });
+
+    useEffect(() => {
+        queryClient.invalidateQueries({ queryKey: ['customers', id] });
+        form.resetFields();
+        form.setFieldsValue({ ...customer });
+    }, [customer?._id]);
 
     return (
         <>
             {/* page title  */}
             <div className='font-black text-2xl text-primary flex items-center justify-between'>
-                <h1>Add Customer</h1>
+                <h1>Edit Customer</h1>
             </div>
             <div className='flex justify-center items-center'>
                 <div className='flex-col lg:flex-row-reverse'>
                     <div className='shadow-2xl bg-base-100'>
                         <div className='card-body'>
-                            <Form onFinish={(values) => mutation.mutate(values)}>
+                            <Form form={form} onFinish={(values) => mutation.mutate(values)}>
                                 <div className='form-control'>
                                     <label className='label'>
                                         <span className='label-text'>Name</span>
@@ -121,4 +140,4 @@ const AddCustomer = () => {
     );
 };
 
-export default AddCustomer;
+export default EditCustomer;

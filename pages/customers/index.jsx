@@ -14,7 +14,6 @@ function Customers() {
         queryKey: ['customers', page, limit],
         queryFn: () => getCustomers(page, limit),
     });
-    console.log('🚀 ~ file: index.jsx:13 ~ About ~ data:', customers);
 
     const CustomerTableColumns = ['Name', 'Phone', 'Email', 'Address'];
 
