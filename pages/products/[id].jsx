@@ -1,26 +1,48 @@
 import DynamicInputFields from '@/components/common/form/dynamicInputFields';
 import { postCustomer } from '@/dataFetcher/customer';
+import { updateProduct } from '@/dataFetcher/product';
+import { getProduct } from '@/dataFetcher/product';
 import { postProduct } from '@/dataFetcher/product';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Checkbox, Form, Input, InputNumber } from 'antd';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
 
-const AddProduct = () => {
+const EditProduct = () => {
     const [hasVariation, setHasVariation] = useState(false);
-    const router = useRouter();
+    const { query, push } = useRouter();
+    const [id, setId] = useState('');
     const queryClient = useQueryClient();
+
+    useEffect(() => {
+        setId(query?.id);
+    }, [query?.id]);
+
+    const { data: product, isLoading } = useQuery({
+        queryKey: ['products', id],
+        queryFn: () => getProduct(id),
+    });
+
+    const [form] = Form.useForm();
     const mutation = useMutation({
         mutationFn: async (values) => {
-            const product = await postProduct(values);
-            product._id && toast.success(`Successfully added ${product.name}`);
-            product._id && router.push('/products');
+            const product = await updateProduct(values, id);
+            product._id && toast.success(`Successfully updated ${product.name}`);
+            product._id && push('/products');
         },
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['product'] });
+            queryClient.invalidateQueries({ queryKey: ['products', id] });
         },
     });
+
+    useEffect(() => {
+        queryClient.invalidateQueries({ queryKey: ['products', id] });
+        setHasVariation(product?.hasVariation);
+        form.resetFields();
+
+        form.setFieldsValue({ ...product });
+    }, [product?._id]);
 
     return (
         <>
@@ -31,6 +53,7 @@ const AddProduct = () => {
 
             <div className='lg:w-1/2 mx-auto shadow-lg card-body'>
                 <Form
+                    form={form}
                     onFinish={(values) => {
                         values.hasVariation = hasVariation;
                         mutation.mutate(values);
@@ -103,4 +126,4 @@ const AddProduct = () => {
     );
 };
 
-export default AddProduct;
+export default EditProduct;
