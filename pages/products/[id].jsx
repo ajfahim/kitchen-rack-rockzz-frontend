@@ -1,4 +1,5 @@
-import DynamicInputFields from '@/components/common/form/dynamicInputFields';
+import DynamicInputFields from '@/components/common/form/ProductsInputFields';
+import VariationFields from '@/components/common/form/variationsInputFields ';
 import { postCustomer } from '@/dataFetcher/customer';
 import { updateProduct } from '@/dataFetcher/product';
 import { getProduct } from '@/dataFetcher/product';
@@ -92,7 +93,7 @@ const EditProduct = () => {
                                 <span className='label-text'>Variations</span>
                             </label>
 
-                            <DynamicInputFields name='variations' unit='unit' price='price' />
+                            <VariationFields name='variations' unit='unit' price='price' />
                         </div>
                     ) : (
                         <div className='form-control'>

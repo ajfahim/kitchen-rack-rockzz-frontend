@@ -49,3 +49,12 @@ export const delCustomer = async (_id) => {
         toast.error(error?.response?.data?.msg);
     }
 };
+export const getCustomerByName = async (name) => {
+    try {
+        const res = await apiClient.get(`customers/by-name/${name}`);
+        return res.data;
+    } catch (error) {
+        console.log(error?.response?.data?.msg);
+        toast.error(error?.response?.data?.msg);
+    }
+};

@@ -49,3 +49,13 @@ export const delProduct = async (_id) => {
         toast.error(error?.response?.data?.msg);
     }
 };
+
+export const getProductByName = async (name) => {
+    try {
+        const res = await apiClient.get(`products/by-name/${name}`);
+        return res.data;
+    } catch (error) {
+        console.log(error?.response?.data?.msg);
+        toast.error(error?.response?.data?.msg);
+    }
+};

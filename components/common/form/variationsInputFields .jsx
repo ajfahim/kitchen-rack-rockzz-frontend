@@ -5,7 +5,7 @@ import { Button, Form, Input, InputNumber, Space } from 'antd';
 const onFinish = (values) => {
     console.log('Received values of form:', values);
 };
-const DynamicInputFields = ({ name, unit, price }) => (
+const VariationFields = ({ name, unit, price }) => (
     <>
         <Form.List rules={[{ required: true, message: 'Variations are required' }]} name={name}>
             {(fields, { add, remove }) => (
@@ -46,7 +46,7 @@ const DynamicInputFields = ({ name, unit, price }) => (
                                 rules={[
                                     {
                                         required: true,
-                                        message: 'Missing first name',
+                                        message: 'Missing Unit',
                                     },
                                 ]}
                             >
@@ -58,7 +58,7 @@ const DynamicInputFields = ({ name, unit, price }) => (
                                 rules={[
                                     {
                                         required: true,
-                                        message: 'Missing last name',
+                                        message: 'Missing Price',
                                     },
                                 ]}
                             >
@@ -84,4 +84,4 @@ const DynamicInputFields = ({ name, unit, price }) => (
         </Form.List>
     </>
 );
-export default DynamicInputFields;
+export default VariationFields;
