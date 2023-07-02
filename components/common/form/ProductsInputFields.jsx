@@ -4,14 +4,16 @@ import { AiOutlineMinusCircle, AiOutlinePlusCircle } from 'react-icons/ai';
 import { Button, Form, Input, InputNumber, Select, Space } from 'antd';
 import { getProductByName } from '@/dataFetcher/product';
 
-const ProductsFields = ({ name, product, qty }) => {
+const ProductsFields = ({ name, product, qty, setSelectedVariation }) => {
     const [productOptions, setProductOptions] = useState([]);
+    console.log('🚀 ~ file: ProductsInputFields.jsx:9 ~ productOptions:', productOptions);
     const [productVariations, setProductVariations] = useState([]);
-    const [productTotalPrice, setProducTotalprice] = useState(0);
+
     console.log(
-        '🚀 ~ file: ProductsInputFields.jsx:11 ~ ProductsFields ~ productTotalPrice:',
-        productTotalPrice
+        '🚀 ~ file: ProductsInputFields.jsx:10 ~ ProductsFields ~ productVariations:',
+        productVariations
     );
+    const [productTotalPrice, setProducTotalprice] = useState(0);
 
     const handleSearch = async (value) => {
         if (value) {
@@ -21,9 +23,14 @@ const ProductsFields = ({ name, product, qty }) => {
     };
 
     const onProductSelect = (index, value, option) => {
+        console.log('🚀 ~ file: ProductsInputFields.jsx:24 ~ onProductSelect ~ option:', option);
         console.log('🚀 ~ file: ProductsInputFields.jsx:20 ~ onProductSelect ~ option:', option);
         if (option.hasVariation) {
             const newProductVariations = [...productVariations];
+            console.log(
+                '🚀 ~ file: ProductsInputFields.jsx:30 ~ onProductSelect ~ newProductVariations:',
+                newProductVariations
+            );
             newProductVariations[index] = option.variations;
             // const price = newProductVariations[index].option.price;
 
@@ -93,9 +100,13 @@ const ProductsFields = ({ name, product, qty }) => {
                                             disabled={!hasVariations}
                                             style={{ width: 100 }}
                                             allowClear
-                                            onSelect={(values, { price }) =>
-                                                setProducTotalprice(price)
-                                            }
+                                            onSelect={(values, data) => {
+                                                setSelectedVariation(data);
+                                                console.log(
+                                                    '🚀 ~ file: ProductsInputFields.jsx:1 ~ {fields.map ~ data:',
+                                                    data
+                                                );
+                                            }}
                                             options={
                                                 hasVariations
                                                     ? productVariations[index].map((pv) => ({

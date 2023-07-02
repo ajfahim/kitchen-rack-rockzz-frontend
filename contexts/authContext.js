@@ -1,24 +1,24 @@
-import { verify } from "@/dataFetcher/user";
-import { createContext, useEffect, useState } from "react";
+import { verify } from '@/dataFetcher/user';
+import { createContext, useEffect, useState } from 'react';
 
 const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [user, setUser] = useState(null);
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [user, setUser] = useState(null);
 
-  useEffect(() => {
-    setIsAuthenticated(verify());
-  }, []);
+    useEffect(() => {
+        setIsAuthenticated(verify());
+    }, []);
 
-  const values = {
-    isAuthenticated,
-    setIsAuthenticated,
-    user,
-    setUser,
-  };
+    const values = {
+        isAuthenticated,
+        setIsAuthenticated,
+        user,
+        setUser,
+    };
 
-  return <AuthContext.Provider value={values}>{children}</AuthContext.Provider>;
+    return <AuthContext.Provider value={values}>{children}</AuthContext.Provider>;
 };
 
 export { AuthContext, AuthProvider };

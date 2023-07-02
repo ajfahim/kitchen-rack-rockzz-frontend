@@ -9,6 +9,8 @@ import { toast } from 'react-hot-toast';
 
 const CerateOrder = () => {
     const [customerOptions, setCustomerOptions] = useState([]);
+    const [selectedVariation, setSelectedVariation] = useState();
+    console.log('🚀 ~ file: add.jsx:13 ~ CerateOrder ~ selectedVariation:', selectedVariation);
     const router = useRouter();
     const [form] = Form.useForm();
     const queryClient = useQueryClient();
@@ -41,7 +43,9 @@ const CerateOrder = () => {
                 <Form
                     form={form}
                     onFinish={(values) => {
-                        mutation.mutate(values);
+                        console.log('🚀 ~ file: add.jsx:44 ~ CerateOrder ~ values:', values);
+                        console.log('🚀 ~ file: add.jsx:44 ~ CerateOrder ~ selectedVariation:his');
+                        // mutation.mutate(values);
                     }}
                     onFinishFailed={(e) => console.log(e)}
                 >
@@ -83,7 +87,12 @@ const CerateOrder = () => {
                             <span className='label-text'>Products</span>
                         </label>
 
-                        <ProductsFields name='products' product='product' qty='quantity' />
+                        <ProductsFields
+                            setSelectedVariation={setSelectedVariation}
+                            name='products'
+                            product='product'
+                            qty='quantity'
+                        />
                     </div>
 
                     <div className='grid grid-cols-2 gap-3'>

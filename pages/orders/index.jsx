@@ -1,4 +1,5 @@
-import Table from '@/components/products/table';
+import Table from '@/components/orders/table';
+import { getOrders } from '@/dataFetcher/orders';
 import { getProducts } from '@/dataFetcher/product';
 import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
@@ -9,12 +10,18 @@ const Orders = () => {
     const [limit, setLimit] = useState(10);
     const onPageChange = (data) => setPage(data);
     const onLimitChange = (data) => setLimit(data);
-    const { data: products, isLoading } = useQuery({
-        queryKey: ['products', page, limit],
-        queryFn: () => getProducts(page, limit),
+    const { data: orders, isLoading } = useQuery({
+        queryKey: ['orders', page, limit],
+        queryFn: () => getOrders(page, limit),
     });
 
-    const ProductTableColumns = ['Product', 'Variations', 'Unit Price'];
+    const OrderTableColumns = [
+        'Order Id',
+        'Products',
+        'Total Price',
+        'Processing Date',
+        'Delivery Date',
+    ];
     return (
         <>
             {/* page title  */}
@@ -29,8 +36,8 @@ const Orders = () => {
                     'loading...'
                 ) : (
                     <Table
-                        columns={ProductTableColumns}
-                        data={products}
+                        columns={OrderTableColumns}
+                        data={orders}
                         onPageChange={onPageChange}
                         onLimitChange={onLimitChange}
                         currentPage={page}
