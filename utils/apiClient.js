@@ -2,7 +2,7 @@ import axios from 'axios';
 import { toast } from 'react-hot-toast';
 
 const apiClient = axios.create({
-    baseURL: process.env.backend_url,
+    baseURL: process.env.NEXT_PUBLIC_BACKEND_URL,
     headers: {
         'Content-Type': 'application/json',
     },

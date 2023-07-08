@@ -8,6 +8,8 @@ import Pagination from '../common/pagination';
 import Link from 'next/link';
 import { delProduct } from '@/dataFetcher/product';
 import InfoModal from '../common/infoModal';
+import moment from 'moment';
+import OrderInfoModal from '../common/orderInfoModal';
 
 const Table = ({ columns, data, onPageChange, onLimitChange, currentPage, limit }) => {
     const [confirmation, setConfirmation] = useState(false);
@@ -49,18 +51,19 @@ const Table = ({ columns, data, onPageChange, onLimitChange, currentPage, limit 
                             <tr key={d._id}>
                                 <td>{index + 1}</td>
                                 <td>{d?._id}</td>
+                                <td>{d?.customer?.name}</td>
                                 <td>
                                     <label
                                         htmlFor='info-modal'
                                         className='text-info underline cursor-pointer'
-                                        onClick={() => setInfoModal(d.variations)}
+                                        onClick={() => setInfoModal(d?.products)}
                                     >
                                         View Products
                                     </label>
                                 </td>
                                 <td>৳{d.totalPrice}</td>
-                                <td>{d.totalPrice}</td>
-                                <td>{d.totalPrice}</td>
+                                <td>{moment(d.processingDate).format('DD MMM YYYY')}</td>
+                                <td>{moment(d.deliveryDate).format('DD MMM YYYY')}</td>
 
                                 <td className='space-x-1'>
                                     <span>
@@ -95,7 +98,7 @@ const Table = ({ columns, data, onPageChange, onLimitChange, currentPage, limit 
                 />
             </div>
             <ConfirmationModal name={item?.name} state={setConfirmation} />
-            <InfoModal data={infoModal} />
+            <OrderInfoModal data={infoModal} />
         </>
     );
 };

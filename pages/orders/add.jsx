@@ -44,8 +44,7 @@ const CerateOrder = () => {
                     form={form}
                     onFinish={(values) => {
                         console.log('🚀 ~ file: add.jsx:44 ~ CerateOrder ~ values:', values);
-                        console.log('🚀 ~ file: add.jsx:44 ~ CerateOrder ~ selectedVariation:his');
-                        // mutation.mutate(values);
+                        mutation.mutate(values);
                     }}
                     onFinishFailed={(e) => console.log(e)}
                 >
@@ -92,6 +91,7 @@ const CerateOrder = () => {
                             name='products'
                             product='product'
                             qty='quantity'
+                            form={form}
                         />
                     </div>
 

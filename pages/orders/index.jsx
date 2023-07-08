@@ -17,6 +17,7 @@ const Orders = () => {
 
     const OrderTableColumns = [
         'Order Id',
+        'Customer Name',
         'Products',
         'Total Price',
         'Processing Date',
