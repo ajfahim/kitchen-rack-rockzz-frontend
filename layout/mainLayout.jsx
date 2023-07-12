@@ -45,7 +45,7 @@ function MainLayout({ children }) {
                 {isAuthenticated ? (
                     <div className='w-full p-5'>{children}</div>
                 ) : (
-                    <div>
+                    <div className='w-full h-screen flex justify-center items-center'>
                         <p>
                             Please{' '}
                             <Link className='underline text-secondary' href={'/login'}>

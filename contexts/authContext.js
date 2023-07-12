@@ -8,7 +8,11 @@ const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
 
     useEffect(() => {
-        setIsAuthenticated(verify());
+        const isVerified = async () => {
+            const isVerified = await verify();
+            setIsAuthenticated(isVerified);
+        };
+        isVerified();
     }, []);
 
     const values = {

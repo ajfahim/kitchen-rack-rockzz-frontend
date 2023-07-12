@@ -2,6 +2,7 @@ import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import moment from 'moment';
 import React, { useRef } from 'react';
+import { BsDownload } from 'react-icons/bs';
 
 const OrderedProductsToday = ({ orderedProductsToday }) => {
     const tableRef = useRef(null);
@@ -22,12 +23,26 @@ const OrderedProductsToday = ({ orderedProductsToday }) => {
     };
 
     return (
-        <>
-            <h1 className='text-secondary-focus mb-2 font-bold'>{`Ordered Products Today (${moment(
-                new Date()
-            ).format('DD MMMM YYYY')})`}</h1>
-            <div>
-                <div className='max-h-[400px] overflow-y-auto'>
+        <div className='shadow-xl rounded-xl w-96 p-3'>
+            <div className='flex justify-around items-center gap-3'>
+                <h1 className='text-secondary-focus mb-2 font-bold'>{`Ordered Products Today (${moment(
+                    new Date()
+                ).format('DD MMMM YYYY')})`}</h1>
+                <button
+                    disabled={orderedProductsToday?.length <= 0}
+                    className='btn btn-square btn-outline btn-sm'
+                    onClick={handlePrint}
+                >
+                    <BsDownload />
+                </button>
+            </div>
+            <div className='flex justify-center items-center mt-3 max-h-[400px]  overflow-y-auto'>
+                {orderedProductsToday?.length <= 0 ? (
+                    <p className='w-full flex justify-center items-center'>
+                        Looks like <span className='text-primary mx-1'>Rafa vaiya</span> forgot to
+                        create orders 👊
+                    </p>
+                ) : (
                     <table ref={tableRef} className='table'>
                         <thead>
                             <tr>
@@ -56,12 +71,9 @@ const OrderedProductsToday = ({ orderedProductsToday }) => {
                             ))}
                         </tbody>
                     </table>
-                </div>
-                <button className='btn btn-secondary' onClick={handlePrint}>
-                    Download PDF
-                </button>
+                )}
             </div>
-        </>
+        </div>
     );
 };
 
