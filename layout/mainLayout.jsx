@@ -1,9 +1,5 @@
 import Navbar from '@/components/common/Navbar';
 import { AuthContext } from '@/contexts/authContext';
-import { verify } from '@/dataFetcher/user';
-import useToken from '@/hooks/useToken';
-import { useQueries, useQueryClient } from '@tanstack/react-query';
-import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useContext, useEffect } from 'react';
