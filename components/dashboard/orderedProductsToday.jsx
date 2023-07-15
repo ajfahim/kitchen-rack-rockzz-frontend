@@ -23,7 +23,7 @@ const OrderedProductsToday = ({ orderedProductsToday }) => {
     };
 
     return (
-        <div className='shadow-xl rounded-xl w-96 p-3'>
+        <div className='shadow-xl rounded-xl w-1/2 p-3'>
             <div className='flex justify-around items-center gap-3'>
                 <h1 className='text-secondary-focus mb-2 font-bold'>{`Ordered Products Today (${moment(
                     new Date()
