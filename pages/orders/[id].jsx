@@ -1,117 +1,187 @@
-import DynamicInputFields from '@/components/common/form/ProductsInputFields';
-import { postCustomer } from '@/dataFetcher/customer';
-import { updateProduct } from '@/dataFetcher/product';
-import { getProduct } from '@/dataFetcher/product';
-import { postProduct } from '@/dataFetcher/product';
+import ProductsFields from '@/components/common/form/ProductsInputFields';
+import { getCustomerByName } from '@/dataFetcher/customer';
+import { createOrder, getOrder, updateOrder } from '@/dataFetcher/orders';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { Checkbox, Form, Input, InputNumber } from 'antd';
+import { DatePicker, Form, Input, Select } from 'antd';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
+import dayjs from 'dayjs';
+import weekday from 'dayjs/plugin/weekday';
+import localeData from 'dayjs/plugin/localeData';
 
-const EditProduct = () => {
-    const [hasVariation, setHasVariation] = useState(false);
-    const { query, push } = useRouter();
+dayjs.extend(weekday);
+dayjs.extend(localeData);
+
+const EditOrder = () => {
+    const [customerOptions, setCustomerOptions] = useState([]);
+    const [selectedVariation, setSelectedVariation] = useState();
+    console.log('🚀 ~ file: add.jsx:13 ~ CerateOrder ~ selectedVariation:', selectedVariation);
+    const router = useRouter();
     const [id, setId] = useState('');
+    const [form] = Form.useForm();
     const queryClient = useQueryClient();
 
     useEffect(() => {
-        setId(query?.id);
-    }, [query?.id]);
+        setId(router.query?.id);
+    }, [router.query?.id]);
 
-    const { data: product, isLoading } = useQuery({
-        queryKey: ['products', id],
-        queryFn: () => getProduct(id),
+    const { data: order, isLoading } = useQuery({
+        queryKey: ['orders', id],
+        queryFn: () => getOrder(id),
     });
-
-    const [form] = Form.useForm();
+    console.log('🚀 ~ file: [id].jsx:27 ~ EditOrder ~ order:', order);
+    const processingDate = dayjs(order?.processingDate);
+    console.log('🚀 ~ file: [id].jsx:29 ~ EditOrder ~ processingDate:', processingDate);
+    const deliveryDate = dayjs(order?.deliveryDate);
+    console.log('🚀 ~ file: [id].jsx:31 ~ EditOrder ~ deliveryDate:', deliveryDate);
     const mutation = useMutation({
         mutationFn: async (values) => {
-            const product = await updateProduct(values, id);
-            product._id && toast.success(`Successfully updated ${product.name}`);
-            product._id && push('/products');
+            const order = await updateOrder(values, id);
+            order._id && toast.success(`Successfully updated the order`);
+            order._id && router.push('/orders');
         },
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['products', id] });
+            queryClient.invalidateQueries({ queryKey: ['orders'] });
         },
     });
 
+    const handleSearch = async (value) => {
+        if (value) {
+            const x = await getCustomerByName(value);
+            setCustomerOptions(x);
+        }
+    };
     useEffect(() => {
-        queryClient.invalidateQueries({ queryKey: ['products', id] });
-        setHasVariation(product?.hasVariation);
+        queryClient.invalidateQueries({ queryKey: ['orders', id] });
+
         form.resetFields();
 
-        form.setFieldsValue({ ...product });
-    }, [product?._id]);
+        // const payload = {
+        //     ...order,
+        //     processingDate,
+        //     deliveryDate,
+        // };
+        form.setFieldsValue({ ...order, processingDate, deliveryDate });
+    }, [order?._id]);
 
     return (
         <>
             {/* page title  */}
             <div className='font-black text-2xl text-primary flex items-center justify-between'>
-                <h1>Add Product</h1>
+                <h1>Create New Order</h1>
             </div>
 
             <div className='lg:w-1/2 mx-auto shadow-lg card-body'>
                 <Form
                     form={form}
                     onFinish={(values) => {
-                        values.hasVariation = hasVariation;
+                        console.log('🚀 ~ file: add.jsx:44 ~ CerateOrder ~ values:', values);
                         mutation.mutate(values);
                     }}
+                    onFinishFailed={(e) => console.log(e)}
                 >
                     <div className='form-control'>
                         <label className='label'>
-                            <span className='label-text'>Product Name</span>
+                            <span className='label-text'>Customer</span>
                         </label>
+
                         <Form.Item
-                            name='name'
+                            name='customer'
                             rules={[
                                 {
                                     required: true,
-                                    message: 'Please input Product name!',
+                                    message: 'Customer is required',
                                 },
                             ]}
                         >
-                            <Input className='input input-bordered' placeholder='Product Name' />
-                        </Form.Item>
-                    </div>
-                    <div className='form-control'>
-                        <label className='label'>
-                            <span className='label-text'>Has variation ?</span>
-                        </label>
-                        <Form.Item name='hasVariation'>
-                            <Checkbox
-                                onChange={() => setHasVariation(!hasVariation)}
-                                defaultChecked={hasVariation}
+                            <Select
+                                showSearch
+                                placeholder='search customers...'
+                                optionFilterProp='children'
+                                // onChange={onChange}
+                                onSearch={handleSearch}
+                                onSelect={(value, option) => {
+                                    form.setFieldsValue({ deliveryAddress: option.address });
+                                }}
+                                filterOption={(input, option) =>
+                                    (option?.label ?? '')
+                                        .toLowerCase()
+                                        .includes(input.toLowerCase())
+                                }
+                                options={customerOptions}
                             />
                         </Form.Item>
                     </div>
-                    {hasVariation ? (
+
+                    <div className='form-control'>
+                        <label className='label'>
+                            <span className='label-text'>Products</span>
+                        </label>
+
+                        <ProductsFields
+                            setSelectedVariation={setSelectedVariation}
+                            name='products'
+                            product='product'
+                            qty='quantity'
+                            form={form}
+                        />
+                    </div>
+
+                    <div className='grid grid-cols-2 gap-3'>
                         <div className='form-control'>
                             <label className='label'>
-                                <span className='label-text'>Variations</span>
+                                <span className='label-text'>Order Processing Date</span>
                             </label>
 
-                            <DynamicInputFields name='variations' unit='unit' price='price' />
-                        </div>
-                    ) : (
-                        <div className='form-control'>
-                            <label className='label'>
-                                <span className='label-text'>Unit Price</span>
-                            </label>
                             <Form.Item
-                                rules={[{ required: true, message: 'Price is missing' }]}
-                                name='unitPrice'
+                                name='processingDate'
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: 'processingDate is required',
+                                    },
+                                ]}
                             >
-                                <InputNumber
-                                    className='w-full py-2'
-                                    min={1}
-                                    addonAfter='৳'
-                                    placeholder='Price'
-                                />
+                                <DatePicker className='w-full' />
                             </Form.Item>
                         </div>
-                    )}
+                        <div className='form-control'>
+                            <label className='label'>
+                                <span className='label-text'>Delivery Date</span>
+                            </label>
+
+                            <Form.Item
+                                name='deliveryDate'
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: 'deliveryDate is required',
+                                    },
+                                ]}
+                            >
+                                <DatePicker className='w-full' />
+                            </Form.Item>
+                        </div>
+                    </div>
+                    <div className='form-control'>
+                        <label className='label'>
+                            <span className='label-text'>Delivery Address</span>
+                        </label>
+
+                        <Form.Item
+                            // initialValue={customerDeliveryAddress}
+                            name='deliveryAddress'
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'deliveryAddress is required',
+                                },
+                            ]}
+                        >
+                            <Input.TextArea rows={4} className='w-full' />
+                        </Form.Item>
+                    </div>
 
                     <div className='form-control mt-6 w-full'>
                         <Form.Item>
@@ -126,4 +196,4 @@ const EditProduct = () => {
     );
 };
 
-export default EditProduct;
+export default EditOrder;

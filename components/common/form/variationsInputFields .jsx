@@ -2,6 +2,7 @@ import React from 'react';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { AiOutlineMinusCircle, AiOutlinePlusCircle } from 'react-icons/ai';
 import { Button, Form, Input, InputNumber, Space } from 'antd';
+
 const onFinish = (values) => {
     console.log('Received values of form:', values);
 };

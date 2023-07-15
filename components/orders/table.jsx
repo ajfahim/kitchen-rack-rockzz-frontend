@@ -6,10 +6,9 @@ import { BsPencilSquare, BsTrash } from 'react-icons/bs';
 import ConfirmationModal from '../common/confirmationModal';
 import Pagination from '../common/pagination';
 import Link from 'next/link';
-import { delProduct } from '@/dataFetcher/product';
-import InfoModal from '../common/infoModal';
 import moment from 'moment';
 import OrderInfoModal from '../common/orderInfoModal';
+import { delOrder } from '@/dataFetcher/orders';
 
 const Table = ({ columns, data, onPageChange, onLimitChange, currentPage, limit }) => {
     const [confirmation, setConfirmation] = useState(false);
@@ -18,11 +17,11 @@ const Table = ({ columns, data, onPageChange, onLimitChange, currentPage, limit 
     const queryClient = useQueryClient();
     const mutation = useMutation({
         mutationFn: async (_id) => {
-            const res = await delProduct(_id);
-            res.id && toast.success(`Successfully deleted ${res?.name}`);
+            const res = await delOrder(_id);
+            res.id && toast.success(`Successfully deleted order with id:${res?.id}`);
         },
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['products'] });
+            queryClient.invalidateQueries({ queryKey: ['orders'] });
             setConfirmation(false);
         },
     });
@@ -67,7 +66,7 @@ const Table = ({ columns, data, onPageChange, onLimitChange, currentPage, limit 
 
                                 <td className='space-x-1'>
                                     <span>
-                                        <Link href={`/products/${d._id}`}>
+                                        <Link href={`/orders/${d._id}`}>
                                             <label className='btn btn-sm btn-info btn-square'>
                                                 <BsPencilSquare size={16} />
                                             </label>

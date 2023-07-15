@@ -54,15 +54,7 @@ const AddCustomer = () => {
                                     <label className='label'>
                                         <span className='label-text'>Email</span>
                                     </label>
-                                    <Form.Item
-                                        name='email'
-                                        rules={[
-                                            {
-                                                required: true,
-                                                message: 'Please input customer email!',
-                                            },
-                                        ]}
-                                    >
+                                    <Form.Item name='email'>
                                         <Input
                                             type='email'
                                             placeholder='Customer Email'

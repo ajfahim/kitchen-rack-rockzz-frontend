@@ -21,6 +21,16 @@ export const getOrders = async (page = 1, limit = 10) => {
     }
 };
 
+export const getOrder = async (id) => {
+    try {
+        const res = await apiClient.get(`orders/${id}`);
+        return res.data;
+    } catch (error) {
+        console.error(error?.response?.data?.msg);
+        toast.error(error?.response?.data?.msg);
+    }
+};
+
 export const getOrderedProductsByDate = async (page = 1, limit = 10) => {
     try {
         const res = await apiClient.get(
@@ -30,5 +40,25 @@ export const getOrderedProductsByDate = async (page = 1, limit = 10) => {
     } catch (error) {
         console.error(error?.response?.data?.msg);
         toast.error(error?.response?.data?.msg || error?.message);
+    }
+};
+
+export const updateOrder = async (values, id) => {
+    try {
+        const res = await apiClient.put(`orders/${id}`, values);
+        return res.data;
+    } catch (error) {
+        console.error(error?.response?.data?.msg);
+        toast.error(error?.response?.data?.msg);
+    }
+};
+
+export const delOrder = async (_id) => {
+    try {
+        const res = await apiClient.delete(`orders/${_id}`);
+        return res.data;
+    } catch (error) {
+        console.log(error?.response?.data?.msg);
+        toast.error(error?.response?.data?.msg);
     }
 };

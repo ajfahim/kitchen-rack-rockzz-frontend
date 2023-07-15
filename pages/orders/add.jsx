@@ -21,7 +21,7 @@ const CerateOrder = () => {
             order._id && router.push('/orders');
         },
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['product'] });
+            queryClient.invalidateQueries({ queryKey: ['orders'] });
         },
     });
 
