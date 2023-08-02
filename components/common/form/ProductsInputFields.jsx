@@ -6,14 +6,7 @@ import { getProductByName } from '@/dataFetcher/product';
 
 const ProductsFields = ({ name, product, qty, setSelectedVariation }) => {
     const [productOptions, setProductOptions] = useState([]);
-    console.log('🚀 ~ file: ProductsInputFields.jsx:9 ~ productOptions:', productOptions);
     const [productVariations, setProductVariations] = useState([]);
-
-    console.log(
-        '🚀 ~ file: ProductsInputFields.jsx:10 ~ ProductsFields ~ productVariations:',
-        productVariations
-    );
-    const [productTotalPrice, setProducTotalprice] = useState(0);
 
     const handleSearch = async (value) => {
         if (value) {
@@ -23,24 +16,16 @@ const ProductsFields = ({ name, product, qty, setSelectedVariation }) => {
     };
 
     const onProductSelect = (index, value, option) => {
-        console.log('🚀 ~ file: ProductsInputFields.jsx:24 ~ onProductSelect ~ option:', option);
-        console.log('🚀 ~ file: ProductsInputFields.jsx:20 ~ onProductSelect ~ option:', option);
         if (option.hasVariation) {
             const newProductVariations = [...productVariations];
-            console.log(
-                '🚀 ~ file: ProductsInputFields.jsx:30 ~ onProductSelect ~ newProductVariations:',
-                newProductVariations
-            );
+
             newProductVariations[index] = option.variations;
-            // const price = newProductVariations[index].option.price;
 
             setProductVariations(newProductVariations);
-            setProducTotalprice(newProductVariations.price);
         } else {
             const newProductVariations = [...productVariations];
             newProductVariations[index] = [];
             setProductVariations(newProductVariations);
-            setProducTotalprice(option.unitPrice);
         }
     };
 
@@ -86,26 +71,13 @@ const ProductsFields = ({ name, product, qty, setSelectedVariation }) => {
                                         />
                                     </Form.Item>
 
-                                    <Form.Item
-                                        {...restField}
-                                        name={[name, 'variation']}
-                                        // rules={[
-                                        //     {
-                                        //         required: true,
-                                        //         message: 'Missing Unit',
-                                        //     },
-                                        // ]}
-                                    >
+                                    <Form.Item {...restField} name={[name, 'variation']}>
                                         <Select
                                             disabled={!hasVariations}
                                             style={{ width: 100 }}
                                             allowClear
                                             onSelect={(values, data) => {
                                                 setSelectedVariation(data);
-                                                console.log(
-                                                    '🚀 ~ file: ProductsInputFields.jsx:1 ~ {fields.map ~ data:',
-                                                    data
-                                                );
                                             }}
                                             options={
                                                 hasVariations

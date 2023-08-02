@@ -1,4 +1,5 @@
 import OrderedProductsToday from '@/components/dashboard/orderedProductsToday';
+import SalesChart from '@/components/dashboard/salesChart';
 import { getOrderedProductsByDate } from '@/dataFetcher/orders';
 import { useQuery } from '@tanstack/react-query';
 import moment from 'moment';
@@ -16,8 +17,11 @@ export default function Home() {
             <Head>
                 <title>Kitchen Rack</title>
             </Head>
-            <main>
-                <OrderedProductsToday orderedProductsToday={orderedProductsToday} />
+            <main className='mt-10'>
+                <div className='space-y-10'>
+                    <OrderedProductsToday orderedProductsToday={orderedProductsToday} />
+                    <SalesChart />
+                </div>
             </main>
         </>
     );

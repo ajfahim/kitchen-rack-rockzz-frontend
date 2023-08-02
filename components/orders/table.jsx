@@ -52,26 +52,48 @@ const Table = ({ columns, data, onPageChange, onLimitChange, currentPage, limit 
                                 <td>{d?._id}</td>
                                 <td>{d?.customer?.name}</td>
                                 <td>
-                                    <label
+                                    {/* <label
                                         htmlFor='info-modal'
                                         className='text-info underline cursor-pointer'
                                         onClick={() => setInfoModal(d?.products)}
                                     >
                                         View Products
-                                    </label>
+                                    </label> */}
+                                    {d.products.map((d) => {
+                                        return (
+                                            <tr key={d.product._id}>
+                                                <td>{d?.product?.name}</td>
+                                                <td>{d?.quantity}</td>
+                                                <td>
+                                                    {d?.product?.hasVariation ? (
+                                                        <span>
+                                                            {
+                                                                d.product.variations.filter(
+                                                                    (f) => f._id === d?.variation
+                                                                )[0].unit
+                                                            }
+                                                        </span>
+                                                    ) : (
+                                                        <span className='text-red-500'>N/A</span>
+                                                    )}
+                                                </td>
+                                            </tr>
+                                        );
+                                    })}
                                 </td>
                                 <td>৳{d.totalPrice}</td>
                                 <td>{moment(d.processingDate).format('DD MMM YYYY')}</td>
                                 <td>{moment(d.deliveryDate).format('DD MMM YYYY')}</td>
 
                                 <td className='space-x-1'>
-                                    <span>
+                                    {/* edit order has issues  */}
+                                    {/* <span>
                                         <Link href={`/orders/${d._id}`}>
                                             <label className='btn btn-sm btn-info btn-square'>
                                                 <BsPencilSquare size={16} />
                                             </label>
                                         </Link>
-                                    </span>
+                                    </span> */}
                                     <span>
                                         <label
                                             htmlFor='confirmation-modal'

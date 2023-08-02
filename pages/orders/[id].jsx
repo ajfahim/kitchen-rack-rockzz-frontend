@@ -30,11 +30,12 @@ const EditOrder = () => {
         queryKey: ['orders', id],
         queryFn: () => getOrder(id),
     });
-    console.log('🚀 ~ file: [id].jsx:27 ~ EditOrder ~ order:', order);
+    // console.log('🚀 ~ file: [id].jsx:27 ~ EditOrder ~ order:', order);
     const processingDate = dayjs(order?.processingDate);
-    console.log('🚀 ~ file: [id].jsx:29 ~ EditOrder ~ processingDate:', processingDate);
+    // console.log('🚀 ~ file: [id].jsx:29 ~ EditOrder ~ processingDate:', processingDate);
     const deliveryDate = dayjs(order?.deliveryDate);
-    console.log('🚀 ~ file: [id].jsx:31 ~ EditOrder ~ deliveryDate:', deliveryDate);
+    // console.log('🚀 ~ file: [id].jsx:31 ~ EditOrder ~ deliveryDate:', deliveryDate);
+
     const mutation = useMutation({
         mutationFn: async (values) => {
             const order = await updateOrder(values, id);
@@ -54,16 +55,20 @@ const EditOrder = () => {
     };
     useEffect(() => {
         queryClient.invalidateQueries({ queryKey: ['orders', id] });
+    }, [id]);
 
+    useEffect(() => {
+        console.log('🚀 ~ file: [id].jsx:64 ~ useEffect ~ order:', order);
         form.resetFields();
+        order &&
+            form.setFieldsValue({
+                ...order,
+                processingDate,
+                deliveryDate,
+            });
+    }, [order]);
 
-        // const payload = {
-        //     ...order,
-        //     processingDate,
-        //     deliveryDate,
-        // };
-        form.setFieldsValue({ ...order, processingDate, deliveryDate });
-    }, [order?._id]);
+    if (isLoading) return 'loading...';
 
     return (
         <>
@@ -99,7 +104,6 @@ const EditOrder = () => {
                                 showSearch
                                 placeholder='search customers...'
                                 optionFilterProp='children'
-                                // onChange={onChange}
                                 onSearch={handleSearch}
                                 onSelect={(value, option) => {
                                     form.setFieldsValue({ deliveryAddress: option.address });
