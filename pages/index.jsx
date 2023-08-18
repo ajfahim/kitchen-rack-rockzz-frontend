@@ -7,11 +7,6 @@ import Head from 'next/head';
 import { Toaster } from 'react-hot-toast';
 
 export default function Home() {
-    const { data: orderedProductsToday, isLoading } = useQuery({
-        queryKey: ['orders'],
-        queryFn: () => getOrderedProductsByDate(),
-    });
-
     return (
         <>
             <Head>
@@ -19,7 +14,7 @@ export default function Home() {
             </Head>
             <main className='mt-10'>
                 <div className='space-y-10'>
-                    <OrderedProductsToday orderedProductsToday={orderedProductsToday} />
+                    <OrderedProductsToday />
                     <SalesChart />
                 </div>
             </main>

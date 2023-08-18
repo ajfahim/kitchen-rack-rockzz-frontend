@@ -7,7 +7,6 @@ import React, { useContext, useEffect } from 'react';
 function MainLayout({ children }) {
     const router = useRouter();
     const { isAuthenticated } = useContext(AuthContext);
-    console.log('🚀 ~ file: mainLayout.jsx:14 ~ MainLayout ~ isAuthenticated:', isAuthenticated);
 
     const menuItems = [
         {
@@ -43,10 +42,10 @@ function MainLayout({ children }) {
                 ) : (
                     <div className='w-full h-screen flex justify-center items-center'>
                         <p>
-                            Please{' '}
+                            Please
                             <Link className='underline text-secondary' href={'/login'}>
                                 Sign in
-                            </Link>{' '}
+                            </Link>
                             first
                         </p>
                     </div>

@@ -1,26 +1,24 @@
+import { getOrderedProductsByDate } from '@/dataFetcher/orders';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { DatePicker, Skeleton } from 'antd';
+import dayjs from 'dayjs';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import moment from 'moment';
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { BsDownload } from 'react-icons/bs';
 
-const OrderedProductsToday = ({ orderedProductsToday }) => {
+const OrderedProductsToday = () => {
+    const [date, setDate] = useState(new Date().toISOString());
+
+    const queryClient = useQueryClient();
+    const { data: orderedProductsToday, isLoading } = useQuery({
+        queryKey: ['orders', date],
+        queryFn: () => getOrderedProductsByDate(date),
+    });
+
     const tableRef = useRef(null);
 
-    // const handlePrint = () => {
-    //     const input = tableRef.current;
-
-    //     html2canvas(input).then((canvas) => {
-    //         const imgData = canvas.toDataURL('image/png');
-    //         const pdf = new jsPDF();
-    //         const imgProps = pdf.getImageProperties(imgData);
-    //         const pdfWidth = pdf.internal.pageSize.getWidth();
-    //         const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-
-    //         pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-    //         pdf.save(`${moment(new Date()).format('DD MMMM YYYY')}_Ordered_Products.pdf`);
-    //     });
-    // };
     const handlePrint = () => {
         const printArea = document.getElementById('print-area');
         let printContents = printArea.innerHTML;
@@ -33,10 +31,14 @@ const OrderedProductsToday = ({ orderedProductsToday }) => {
 
     return (
         <div className='shadow-xl rounded-xl w-1/2 p-3'>
-            <div className='flex justify-around items-center gap-3'>
-                <h1 className='text-secondary-focus text-2xl mb-2 font-bold'>{`Ordered Products Today (${moment(
-                    new Date()
-                ).format('DD MMMM YYYY')})`}</h1>
+            <div className='flex justify-between items-center gap-3'>
+                <DatePicker
+                    allowClear={false}
+                    onChange={(value) => {
+                        setDate(dayjs(value).toISOString());
+                        queryClient.invalidateQueries({ queryKey: ['orders', date] });
+                    }}
+                />
                 <button
                     disabled={orderedProductsToday?.length <= 0}
                     className='btn btn-square btn-outline btn-sm'
@@ -47,9 +49,14 @@ const OrderedProductsToday = ({ orderedProductsToday }) => {
             </div>
             <div
                 id='print-area'
-                className='flex justify-center items-center mt-3 max-h-[400px]  overflow-y-auto'
+                className='flex flex-col justify-center items-center mt-3 max-h-[400px]  overflow-y-auto'
             >
-                {orderedProductsToday?.length <= 0 ? (
+                <h1 className='text-secondary-focus text-2xl mb-2 font-bold'>{`Ordered Products (${dayjs(
+                    date
+                ).format('DD MMMM YYYY')})`}</h1>
+                {isLoading ? (
+                    <Skeleton active />
+                ) : orderedProductsToday?.length <= 0 ? (
                     <p className='w-full flex justify-center items-center'>
                         Looks like <span className='text-primary mx-1'>Rafa vaiya</span> forgot to
                         create orders 👊

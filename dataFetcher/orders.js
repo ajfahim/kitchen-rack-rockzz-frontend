@@ -31,10 +31,10 @@ export const getOrder = async (id) => {
     }
 };
 
-export const getOrderedProductsByDate = async (page = 1, limit = 10) => {
+export const getOrderedProductsByDate = async (date, page = 1, limit = 10) => {
     try {
         const res = await apiClient.get(
-            `orders/products/orderedProductsToday?page=${page}&limit=${limit}`
+            `orders/products/orderedProductsToday?date=${date}&page=${page}&limit=${limit}`
         );
         return res.data;
     } catch (error) {
