@@ -8,8 +8,14 @@ import moment from 'moment';
 import React, { useRef, useState } from 'react';
 import { BsDownload } from 'react-icons/bs';
 
+const utc = require('dayjs/plugin/utc');
+const timezone = require('dayjs/plugin/timezone');
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
+
 const OrderedProductsToday = () => {
-    const [date, setDate] = useState(new Date().toISOString());
+    const [date, setDate] = useState(new Date());
 
     const queryClient = useQueryClient();
     const { data: orderedProductsToday, isLoading } = useQuery({
@@ -35,7 +41,7 @@ const OrderedProductsToday = () => {
                 <DatePicker
                     allowClear={false}
                     onChange={(value) => {
-                        setDate(dayjs(value).toISOString());
+                        setDate(dayjs.tz(value, 'Asia/Dhaka').toDate());
                         queryClient.invalidateQueries({ queryKey: ['orders', date] });
                     }}
                 />
