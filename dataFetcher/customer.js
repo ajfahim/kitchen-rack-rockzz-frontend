@@ -11,9 +11,9 @@ export const postCustomer = async (values) => {
     }
 };
 
-export const getCustomers = async (page = 1, limit = 10) => {
+export const getCustomers = async (page = 1, limit = 10, search = '') => {
     try {
-        const res = await apiClient.get(`customers?page=${page}&limit=${limit}`);
+        const res = await apiClient.get(`customers?page=${page}&limit=${limit}&search=${search}`);
         return res.data;
     } catch (error) {
         console.error(error?.response?.data?.msg);
