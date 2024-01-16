@@ -11,9 +11,9 @@ export const postProduct = async (values) => {
     }
 };
 
-export const getProducts = async (page = 1, limit = 10) => {
+export const getProducts = async (page = 1, limit = 10, search = '') => {
     try {
-        const res = await apiClient.get(`products?page=${page}&limit=${limit}`);
+        const res = await apiClient.get(`products?page=${page}&limit=${limit}&search=${search}`);
         return res.data;
     } catch (error) {
         console.error(error?.response?.data?.msg);

@@ -1,6 +1,6 @@
 import Table from '@/components/customers/table';
 import { getCustomers } from '@/dataFetcher/customer';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useState } from 'react';
 
@@ -21,8 +21,6 @@ function Customers() {
     });
 
     const CustomerTableColumns = ['Name', 'Phone', 'Email', 'Address'];
-
-    const queryClient = useQueryClient();
 
     const handleSearch = (e) => {
         e.preventDefault();
