@@ -55,7 +55,6 @@ const SalesChart = () => {
                         options={[
                             { value: 'daily', label: 'Daily' },
                             { value: 'monthly', label: 'Monthly' },
-                            { value: 'yearly', label: 'Yearly' },
                         ]}
                     />
                     {timePeriod === 'monthly' && (

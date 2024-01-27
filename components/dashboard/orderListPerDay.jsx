@@ -78,7 +78,7 @@ const OrderListPerDay = () => {
                                 {orderListToday?.orders?.map((d, index) => (
                                     <tr key={d._id}>
                                         <td>{index + 1}</td>
-                                        <td className='!max-w-[300px] text-wrap'>
+                                        <td className='!max-w-[300px] !text-wrap'>
                                             {d.customer.name}
                                         </td>
                                         <td>
