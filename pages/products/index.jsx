@@ -46,7 +46,7 @@ const Products = () => {
                         >
                             <input
                                 type='text'
-                                placeholder='Search Customers...'
+                                placeholder='Search Products...'
                                 className='input input-bordered input-primary w-full max-w-xs'
                                 onChange={(e) => setSearchInput(e.target.value)}
                             />

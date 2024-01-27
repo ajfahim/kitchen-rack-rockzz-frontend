@@ -1,10 +1,7 @@
+import OrderListPerDay from '@/components/dashboard/orderListPerDay';
 import OrderedProductsToday from '@/components/dashboard/orderedProductsToday';
 import SalesChart from '@/components/dashboard/salesChart';
-import { getOrderedProductsByDate } from '@/dataFetcher/orders';
-import { useQuery } from '@tanstack/react-query';
-import moment from 'moment';
 import Head from 'next/head';
-import { Toaster } from 'react-hot-toast';
 
 export default function Home() {
     return (
@@ -14,7 +11,11 @@ export default function Home() {
             </Head>
             <main className='mt-10'>
                 <div className='space-y-10'>
-                    <OrderedProductsToday />
+                    <div className='flex items-center justify-center space-x-10'>
+                        <OrderedProductsToday />
+                        <OrderListPerDay />
+                    </div>
+
                     <SalesChart />
                 </div>
             </main>

@@ -1,53 +1,79 @@
 import { getDailySales, getMonthlySales } from '@/dataFetcher/orders';
-import { useQuery } from '@tanstack/react-query';
-import { Select, Skeleton } from 'antd';
-import React, { PureComponent, useState } from 'react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { DatePicker, Select, Skeleton } from 'antd';
+import dayjs from 'dayjs';
+import { useState } from 'react';
 import {
-    AreaChart,
     Area,
+    AreaChart,
+    CartesianGrid,
+    ResponsiveContainer,
+    Tooltip,
     XAxis,
     YAxis,
-    CartesianGrid,
-    Tooltip,
-    ResponsiveContainer,
 } from 'recharts';
+
+const utc = require('dayjs/plugin/utc');
+const timezone = require('dayjs/plugin/timezone');
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 const SalesChart = () => {
     const [timePeriod, setTimePeriod] = useState('daily');
-
+    const [year, setYear] = useState(dayjs().year());
+    console.log('🚀 ~ SalesChart ~ year:', year);
+    const queryClient = useQueryClient();
     const { data: dailySales, isLoading } = useQuery({
         queryKey: ['orders', 'daily-sales'],
         queryFn: () => getDailySales(),
     });
-    console.log('🚀 ~ file: salesChart.jsx:23 ~ SalesChart ~ dailySales:', dailySales);
 
-    const { data: monthlySales } = useQuery({
-        queryKey: ['orders', 'monthly-sales'],
-        queryFn: () => getMonthlySales(),
+    const { data: monthlySales, isLoading: isMonthlyChartLoading } = useQuery({
+        queryKey: ['orders', year],
+        queryFn: () => getMonthlySales(year),
     });
-    console.log('🚀 ~ file: salesChart.jsx:29 ~ SalesChart ~ monthlySales:', monthlySales);
 
     return (
         <div className='shadow-xl rounded-xl  p-3 w-full h-[30rem]'>
             <div>
-                <p className='flex justify-center items-center text-2xl font-bold text-secondary-focus '>
-                    {` Sales Chart ${
-                        timePeriod === 'daily' ? dailySales?.month : monthlySales?.year
-                    }`}
-                </p>
-                <div className='flex justify-end items-center'>
+                {!isLoading && !isMonthlyChartLoading ? (
+                    <p className='flex justify-center items-center text-2xl font-bold text-secondary-focus '>
+                        {` Sales Chart ${
+                            timePeriod === 'daily' ? dailySales?.month : monthlySales?.year
+                        }`}
+                    </p>
+                ) : (
+                    <span className='w-full h-96'>
+                        <Skeleton active />
+                    </span>
+                )}
+                <div className='flex justify-end items-center gap-3 pr-10'>
                     <Select
+                        className='w-[100px]'
                         onChange={(value) => setTimePeriod(value)}
                         defaultValue={'daily'}
                         options={[
                             { value: 'daily', label: 'Daily' },
                             { value: 'monthly', label: 'Monthly' },
+                            { value: 'yearly', label: 'Yearly' },
                         ]}
                     />
+                    {timePeriod === 'monthly' && (
+                        <DatePicker
+                            picker='year'
+                            allowClear={false}
+                            onChange={(value) => {
+                                setYear(dayjs.tz(value, 'Asia/Dhaka').year());
+                                queryClient.invalidateQueries({
+                                    queryKey: ['orders', year],
+                                });
+                            }}
+                        />
+                    )}
                 </div>
             </div>
             <div className='w-full h-96'>
-                {!isLoading ? (
+                {!isLoading && !isMonthlyChartLoading ? (
                     <ResponsiveContainer width='100%' height='100%'>
                         <AreaChart
                             width={500}

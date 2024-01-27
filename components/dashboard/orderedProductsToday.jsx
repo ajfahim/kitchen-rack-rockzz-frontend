@@ -2,8 +2,9 @@ import { getOrderedProductsByDate } from '@/dataFetcher/orders';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { DatePicker, Skeleton } from 'antd';
 import dayjs from 'dayjs';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { BsDownload } from 'react-icons/bs';
+import ReactToPrint from 'react-to-print';
 
 const utc = require('dayjs/plugin/utc');
 const timezone = require('dayjs/plugin/timezone');
@@ -20,22 +21,12 @@ const OrderedProductsToday = () => {
         queryFn: () => getOrderedProductsByDate(date),
     });
 
-    // const tableRef = useRef(null);
-
-    const handlePrint = () => {
-        const printArea = document.getElementById('print-area');
-        let printContents = printArea.innerHTML;
-        let originalContents = document.body.innerHTML;
-        document.body.innerHTML = printContents;
-        window.print();
-        document.body.innerHTML = originalContents;
-        window.location.reload();
-    };
+    const tableRef = useRef(null);
 
     return (
-        <>
+        <div className='w-1/2'>
             <h1 className='text-secondary-focus block text-2xl mb-2 font-bold'>Ordered Products</h1>
-            <div className='shadow-xl rounded-xl w-1/2 p-3 max-h-[600px] overflow-y-scroll'>
+            <div className='shadow-xl rounded-xl  p-3 max-h-[600px] overflow-y-scroll'>
                 <div className='flex justify-between items-center gap-3'>
                     <DatePicker
                         allowClear={false}
@@ -44,15 +35,30 @@ const OrderedProductsToday = () => {
                             queryClient.invalidateQueries({ queryKey: ['orders', date] });
                         }}
                     />
-                    <button
+                    <ReactToPrint
+                        trigger={() => (
+                            <button
+                                disabled={orderedProductsToday?.length <= 0}
+                                className='btn btn-square btn-outline btn-sm'
+                            >
+                                <BsDownload />
+                            </button>
+                        )}
+                        content={() => tableRef.current}
+                    />
+                    {/* <button
                         disabled={orderedProductsToday?.length <= 0}
                         className='btn btn-square btn-outline btn-sm'
                         onClick={handlePrint}
                     >
                         <BsDownload />
-                    </button>
+                    </button> */}
                 </div>
-                <div id='print-area' className='flex flex-col justify-center items-center mt-3'>
+                <div
+                    ref={tableRef}
+                    id='print-area'
+                    className='flex flex-col justify-center items-center mt-3'
+                >
                     <h3 className='text-secondary-focus block text-xl mb-2 font-bold'>{`Ordered Products (${dayjs(
                         date
                     ).format('DD MMMM YYYY')})`}</h3>
@@ -95,7 +101,7 @@ const OrderedProductsToday = () => {
                     )}
                 </div>
             </div>
-        </>
+        </div>
     );
 };
 
