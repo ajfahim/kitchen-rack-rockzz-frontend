@@ -50,7 +50,7 @@ const OrderListPerDay = () => {
                 </div>
                 <div
                     id='print-area-order-list'
-                    className='flex flex-col justify-center items-center mt-3 '
+                    className='flex flex-col justify-center items-center mt-3 px-2'
                     ref={printableRef}
                 >
                     <h3 className='text-secondary-focus block text-xl mb-2 font-bold'>{`Customer wise order list (${dayjs(
