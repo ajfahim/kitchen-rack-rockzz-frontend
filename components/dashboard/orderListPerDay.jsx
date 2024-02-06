@@ -23,7 +23,7 @@ const OrderListPerDay = () => {
     const printableRef = useRef(null);
 
     return (
-        <div className='w-1/2'>
+        <div className=''>
             <h1 className='text-secondary-focus block text-2xl mb-2 font-bold'>
                 Customer wise order list
             </h1>
@@ -76,11 +76,9 @@ const OrderListPerDay = () => {
                             </thead>
                             <tbody>
                                 {orderListToday?.orders?.map((d, index) => (
-                                    <tr key={d._id}>
+                                    <tr className='border-b-2 border-gray-700' key={d._id}>
                                         <td>{index + 1}</td>
-                                        <td className='!max-w-[300px] !text-wrap'>
-                                            {d.customer.name}
-                                        </td>
+                                        <td className='w-[200px] text-wrap'>{d.customer.name}</td>
                                         <td>
                                             {d.products.map((d) => {
                                                 return (

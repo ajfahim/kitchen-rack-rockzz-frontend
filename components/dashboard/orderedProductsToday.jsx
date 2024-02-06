@@ -24,7 +24,7 @@ const OrderedProductsToday = () => {
     const tableRef = useRef(null);
 
     return (
-        <div className='w-1/2'>
+        <div className=''>
             <h1 className='text-secondary-focus block text-2xl mb-2 font-bold'>Ordered Products</h1>
             <div className='shadow-xl rounded-xl  p-3 max-h-[600px] overflow-y-scroll'>
                 <div className='flex justify-between items-center gap-3'>
@@ -80,7 +80,7 @@ const OrderedProductsToday = () => {
                             </thead>
                             <tbody>
                                 {orderedProductsToday?.map((product, index) => (
-                                    <tr key={index}>
+                                    <tr className='border-b-2 border-gray-700' key={index}>
                                         <td>{product.product}</td>
                                         <td>{product.quantity}</td>
                                         <td>

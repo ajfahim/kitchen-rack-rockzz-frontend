@@ -2,7 +2,7 @@ import Navbar from '@/components/common/Navbar';
 import { AuthContext } from '@/contexts/authContext';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import React, { useContext, useEffect } from 'react';
+import { useContext } from 'react';
 
 function MainLayout({ children }) {
     const router = useRouter();
@@ -53,7 +53,7 @@ function MainLayout({ children }) {
             </div>
             <div className='drawer-side shadow-lg'>
                 <label htmlFor='sidebar' className='drawer-overlay' />
-                <ul className='menu w-80 space-y-2 bg-base-100 p-4 text-base-content'>
+                <ul className='menu w-52 space-y-2 bg-base-100 p-4 text-base-content'>
                     {/* <!-- Sidebar content here --> */}
                     {menuItems.map((item) => (
                         <li
