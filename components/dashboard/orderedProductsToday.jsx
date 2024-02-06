@@ -73,6 +73,7 @@ const OrderedProductsToday = () => {
                         <table className='table'>
                             <thead>
                                 <tr>
+                                    <th>#</th>
                                     <th>Product</th>
                                     <th>Quantity</th>
                                     <th>Variations</th>
@@ -81,6 +82,7 @@ const OrderedProductsToday = () => {
                             <tbody>
                                 {orderedProductsToday?.map((product, index) => (
                                     <tr className='border-b-2 border-gray-700' key={index}>
+                                        <td>{index + 1}</td>
                                         <td>{product.product}</td>
                                         <td>{product.quantity}</td>
                                         <td>
