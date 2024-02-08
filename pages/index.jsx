@@ -11,12 +11,11 @@ export default function Home() {
             </Head>
             <main className='mt-10'>
                 <div className='space-y-10'>
-                    <div className='flex items-center justify-center space-x-10'>
+                    <SalesChart />
+                    <div className='flex flex-col items-center justify-center gap-10'>
                         <OrderedProductsToday />
                         <OrderListPerDay />
                     </div>
-
-                    <SalesChart />
                 </div>
             </main>
         </>
