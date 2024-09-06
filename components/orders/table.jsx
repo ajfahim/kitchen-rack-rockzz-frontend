@@ -1,14 +1,12 @@
-import { delCustomer } from '@/dataFetcher/customer';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import React, { useEffect, useState } from 'react';
-import { toast } from 'react-hot-toast';
-import { BsPencilSquare, BsTrash } from 'react-icons/bs';
-import ConfirmationModal from '../common/confirmationModal';
-import Pagination from '../common/pagination';
-import Link from 'next/link';
-import moment from 'moment';
-import OrderInfoModal from '../common/orderInfoModal';
 import { delOrder } from '@/dataFetcher/orders';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import moment from 'moment';
+import { useEffect, useState } from 'react';
+import { toast } from 'react-hot-toast';
+import { BsTrash } from 'react-icons/bs';
+import ConfirmationModal from '../common/confirmationModal';
+import OrderInfoModal from '../common/orderInfoModal';
+import Pagination from '../common/pagination';
 
 const Table = ({ columns, data, onPageChange, onLimitChange, currentPage, limit }) => {
     const [confirmation, setConfirmation] = useState(false);
@@ -61,14 +59,14 @@ const Table = ({ columns, data, onPageChange, onLimitChange, currentPage, limit 
                                     </label> */}
                                     {d.products.map((d) => {
                                         return (
-                                            <tr key={d.product._id}>
+                                            <tr key={d.product?._id}>
                                                 <td>{d?.product?.name}</td>
                                                 <td>{d?.quantity}</td>
                                                 <td>
                                                     {d?.product?.hasVariation ? (
                                                         <span>
                                                             {
-                                                                d.product.variations.filter(
+                                                                d?.product.variations.filter(
                                                                     (f) => f._id === d?.variation
                                                                 )[0].unit
                                                             }
@@ -81,9 +79,9 @@ const Table = ({ columns, data, onPageChange, onLimitChange, currentPage, limit 
                                         );
                                     })}
                                 </td>
-                                <td>৳{d.totalPrice}</td>
-                                <td>{moment(d.processingDate).format('DD MMM YYYY')}</td>
-                                <td>{moment(d.deliveryDate).format('DD MMM YYYY')}</td>
+                                <td>৳{d?.totalPrice}</td>
+                                <td>{moment(d?.processingDate).format('DD MMM YYYY')}</td>
+                                <td>{moment(d?.deliveryDate).format('DD MMM YYYY')}</td>
 
                                 <td className='space-x-1'>
                                     {/* edit order has issues  */}
