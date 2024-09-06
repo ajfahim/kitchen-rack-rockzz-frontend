@@ -76,13 +76,13 @@ const OrderListPerDay = () => {
                             </thead>
                             <tbody>
                                 {orderListToday?.orders?.map((d, index) => (
-                                    <tr className='border-b-2 border-gray-700' key={d._id}>
+                                    <tr className='border-b-2 border-gray-700' key={d?._id}>
                                         <td>{index + 1}</td>
-                                        <td className='w-[200px] text-wrap'>{d.customer.name}</td>
+                                        <td className='w-[200px] text-wrap'>{d?.customer?.name}</td>
                                         <td>
                                             {d.products.map((d) => {
                                                 return (
-                                                    <tr key={d.product._id}>
+                                                    <tr key={d?.product?._id}>
                                                         <td>{d?.product?.name}</td>
                                                     </tr>
                                                 );
@@ -91,7 +91,7 @@ const OrderListPerDay = () => {
                                         <td>
                                             {d.products.map((d) => {
                                                 return (
-                                                    <tr key={d.product._id}>
+                                                    <tr key={d?.product?._id}>
                                                         <td>{d?.quantity}</td>
                                                     </tr>
                                                 );
@@ -100,14 +100,14 @@ const OrderListPerDay = () => {
                                         <td>
                                             {d.products.map((d) => {
                                                 return (
-                                                    <tr key={d.product._id}>
+                                                    <tr key={d?.product?._id}>
                                                         <td>
                                                             {d?.product?.hasVariation ? (
                                                                 <span>
                                                                     {
-                                                                        d.product.variations.filter(
+                                                                        d?.product?.variations?.filter(
                                                                             (f) =>
-                                                                                f._id ===
+                                                                                f?._id ===
                                                                                 d?.variation
                                                                         )[0].unit
                                                                     }
