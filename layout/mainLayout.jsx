@@ -29,6 +29,11 @@ function MainLayout({ children }) {
             href: '/orders',
             title: 'Orders',
         },
+        {
+            id: 5,
+            href: '/order-drafts',
+            title: 'Order Drafts',
+        },
     ];
 
     return (

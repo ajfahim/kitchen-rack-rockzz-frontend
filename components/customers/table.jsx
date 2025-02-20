@@ -1,13 +1,14 @@
 import { delCustomer } from '@/dataFetcher/customer';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import React, { useEffect, useState } from 'react';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { BsPencilSquare, BsTrash } from 'react-icons/bs';
 import ConfirmationModal from '../common/confirmationModal';
 import Pagination from '../common/pagination';
-import Link from 'next/link';
 
 const Table = ({ columns, data, onPageChange, onLimitChange, currentPage, limit }) => {
+    console.log('🚀 ~ Table ~ data:', data);
     const [confirmation, setConfirmation] = useState(false);
     const [item, setItem] = useState({});
     const queryClient = useQueryClient();
