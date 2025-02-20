@@ -1,6 +1,4 @@
-import React from 'react';
-
-const ConfirmationModal = ({ name, state }) => {
+const ConfirmationModal = ({ name = 'Record', state }) => {
     return (
         <div>
             {/* The button to open modal */}

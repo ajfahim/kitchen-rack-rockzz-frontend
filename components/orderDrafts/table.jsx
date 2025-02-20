@@ -3,7 +3,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Table as AntTable, Tooltip, Typography } from 'antd';
 import moment from 'moment';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { BsPencilSquare, BsTrash } from 'react-icons/bs';
 import ConfirmationModal from '../common/confirmationModal';
@@ -25,11 +25,11 @@ const Table = ({ columns, data, onPageChange, onLimitChange, currentPage, limit 
             queryClient.invalidateQueries({ queryKey: ['order-drafts'] });
         },
     });
-
-    const handleDelete = (record) => {
-        setItem(record);
-        setConfirmation(true);
-    };
+    useEffect(() => {
+        if (confirmation === true) {
+            mutation.mutate(item._id);
+        }
+    }, [confirmation]);
 
     const antColumns = [
         {
@@ -106,11 +106,14 @@ const Table = ({ columns, data, onPageChange, onLimitChange, currentPage, limit 
                             <BsPencilSquare size={16} />
                         </button>
                     </Link>
-                    <button
-                        className='btn btn-sm btn-error btn-square'
-                        onClick={() => handleDelete(record)}
-                    >
-                        <BsTrash size={16} />
+                    <button className='btn btn-sm btn-error btn-square'>
+                        <label
+                            htmlFor='confirmation-modal'
+                            className='btn btn-sm btn-error btn-square'
+                            onClick={() => setItem(record)}
+                        >
+                            <BsTrash size={16} />
+                        </label>
                     </button>
                 </div>
             ),
@@ -141,7 +144,7 @@ const Table = ({ columns, data, onPageChange, onLimitChange, currentPage, limit 
                     size='middle'
                 />
             </div>
-            <ConfirmationModal name={item?.name} state={setConfirmation} />
+            <ConfirmationModal name={item?.name || 'This order draft'} state={setConfirmation} />
         </>
     );
 };
