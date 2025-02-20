@@ -34,28 +34,28 @@ const OrderDrafts = () => {
     return (
         <div className="flex flex-col h-[calc(100vh-6rem)]">
             {/* page title and actions */}
-            <div className='flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4'>
-                <h1 className='font-black text-2xl text-primary'>Order Drafts</h1>
-                <div className='flex flex-col sm:flex-row items-start sm:items-center gap-3'>
-                    <Link 
-                        className='btn btn-secondary whitespace-nowrap w-full sm:w-auto text-center' 
-                        href={'/order-drafts/add'}
-                    >
-                        Create New Order Draft
-                    </Link>
-                    <div className="relative w-full sm:w-auto">
-                        <DatePicker 
-                            onChange={handleDateChange}
-                            value={selectedDate}
-                            placeholder="Filter by date"
-                            allowClear
-                            style={{ width: '100%' }}
-                            getPopupContainer={(trigger) => trigger.parentNode}
-                            dropdownAlign={{ offset: [0, 0] }}
-                        />
-                    </div>
+            <div className='font-black text-2xl text-primary flex items-center justify-between mb-4'>
+                <h1>Order Drafts</h1>
+                <Link className='btn btn-secondary whitespace-nowrap' href={'/order-drafts/add'}>
+                    Create New Order Draft
+                </Link>
+            </div>
+
+            {/* date filter */}
+            <div className="mb-4">
+                <div className="relative w-full max-w-xs">
+                    <DatePicker 
+                        onChange={handleDateChange}
+                        value={selectedDate}
+                        placeholder="Filter by date..."
+                        allowClear
+                        style={{ width: '100%' }}
+                        getPopupContainer={(trigger) => trigger.parentNode}
+                        dropdownAlign={{ offset: [0, 0] }}
+                    />
                 </div>
             </div>
+
             <div className="flex-1 relative min-h-[500px]">
                 <Spin spinning={isLoading} size="large">
                     <Table
