@@ -10,7 +10,7 @@ import ConfirmationModal from '../common/confirmationModal';
 
 const { Paragraph } = Typography;
 
-const Table = ({ columns, data, onPageChange, onLimitChange, currentPage, limit }) => {
+const Table = ({ data, onPageChange, onLimitChange, limit }) => {
     const [confirmation, setConfirmation] = useState(false);
     const [item, setItem] = useState({});
     const queryClient = useQueryClient();
@@ -65,6 +65,7 @@ const Table = ({ columns, data, onPageChange, onLimitChange, currentPage, limit 
                         expandable: true,
                         symbol: 'more',
                     }}
+                    style={{ whiteSpace: 'pre-line' }}
                 >
                     {text}
                 </Paragraph>
@@ -82,6 +83,7 @@ const Table = ({ columns, data, onPageChange, onLimitChange, currentPage, limit 
                         expandable: true,
                         symbol: 'more',
                     }}
+                    style={{ whiteSpace: 'pre-line' }}
                 >
                     {text}
                 </Paragraph>
@@ -92,7 +94,7 @@ const Table = ({ columns, data, onPageChange, onLimitChange, currentPage, limit 
             dataIndex: 'processingDate',
             key: 'processingDate',
             width: 120,
-            render: (date) => moment(date).format('DD MMM YYYY'),
+            render: (date) => moment.utc(date).format('DD MMM YYYY'),
         },
         {
             title: 'Actions',
@@ -128,9 +130,9 @@ const Table = ({ columns, data, onPageChange, onLimitChange, currentPage, limit 
                     dataSource={data?.docs}
                     rowKey='_id'
                     pagination={{
-                        total: data?.totalCount,
-                        current: currentPage,
-                        pageSize: limit,
+                        total: data?.totalDocs,
+                        current: data?.page,
+                        pageSize: data?.limit,
                         onChange: (page, pageSize) => {
                             onPageChange(page);
                             if (pageSize !== limit) {
