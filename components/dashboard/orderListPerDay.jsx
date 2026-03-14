@@ -104,13 +104,10 @@ const OrderListPerDay = () => {
                                                         <td>
                                                             {d?.product?.hasVariation ? (
                                                                 <span>
-                                                                    {
-                                                                        d?.product?.variations?.filter(
-                                                                            (f) =>
-                                                                                f?._id ===
-                                                                                d?.variation
-                                                                        )[0].unit
-                                                                    }
+                                                                    {d?.product?.variations?.filter(
+                                                                        (f) =>
+                                                                            f?._id === d?.variation
+                                                                    )?.[0]?.unit ?? 'N/A'}
                                                                 </span>
                                                             ) : (
                                                                 <span className='text-red-500'>

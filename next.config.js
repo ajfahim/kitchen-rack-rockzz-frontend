@@ -4,7 +4,7 @@ const nextConfig = {
     env: {
         backend_url:
             process.env.NODE_ENV === 'development'
-                ? 'http://localhost:5000/api'
+                ? 'http://localhost:5001/api'
                 : 'https://kitchen-rack-rockzz-backend-dev.vercel.app/api',
     },
 };

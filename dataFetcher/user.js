@@ -23,6 +23,9 @@ export const verify = async () => {
     }
     return true;
   } catch (error) {
-    console.error(error.response.data.msg);
+    // error.response can be undefined (e.g. CORS or network failure)
+    const message = error.response?.data?.msg ?? error.message ?? "Request failed";
+    console.error(message);
+    return false;
   }
 };

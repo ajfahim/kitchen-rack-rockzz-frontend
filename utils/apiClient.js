@@ -5,6 +5,8 @@ import Router from 'next/router';
 // Keep track of whether we've shown the unauthorized toast
 let hasShownUnauthorizedToast = false;
 
+console.log(process.env.backend_url);
+
 const apiClient = axios.create({
     baseURL: process.env.backend_url,
     headers: {
